@@ -28,20 +28,29 @@ const MainDiv = styled.div`
 function Home(props) {
     const [vtubers, setVtubers] = useState([
         {
+            id: 1,
             name: "Inugami Korone",
+            gen: 3.5,
             image: "https://static.miraheze.org/hololivewiki/thumb/f/f3/Inugami_Korone_-_Portrait_05.png/290px-Inugami_Korone_-_Portrait_05.png",
             youtube: "#",
             twitter: "#",
-            color: "#FFFF00"
+            color: "#FDFD96"
         },
         {
+            id: 2,
             name: "Nekomata Okayu",
+            gen: 3.5,
             image: "https://static.miraheze.org/hololivewiki/thumb/1/12/Nekomata_Okayu_-_Portrait_3D_01.png/290px-Nekomata_Okayu_-_Portrait_3D_01.png",
             youtube: "#",
             twitter: "#",
             color: "#CBC3E3"
         },
     ]);
+
+    const updateVtubers = (editInfo) => {
+        let newVtubers = vtubers.map(vtuber => vtuber.id === editInfo.id ? editInfo : vtuber)
+        setVtubers([...newVtubers])
+    }
 
     return (
         <HomeWrapper>
@@ -53,8 +62,8 @@ function Home(props) {
                 </DisplayDiv>
             </DisplayDiv>
             <MainDiv>
-                {vtubers.map(vtuber => (
-                    <Card info={vtuber}/>
+                {vtubers.map((vtuber, idx) => (
+                    <Card key={`Card${vtuber.id}`} info={vtuber} onChange={updateVtubers}/>
                 ))}
             </MainDiv>
         </HomeWrapper>
