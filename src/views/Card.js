@@ -10,6 +10,7 @@ const CardWrapper = styled.div`
     background: ${({bgcolor}) => bgcolor};
     flex-flow: ${({edit}) => edit ? "row" : "column"};
     align-items: center;
+    justify-content: center;
 `
 const OptionWrapper = styled.div`
     display: flex;
@@ -63,7 +64,7 @@ const VIcon = styled.a`
 `
 
 function Card(props) {
-    const {info, onChange} = props;
+    const {info, onChange, onDelete} = props;
 
     const [editMode, setEditMode] = useState(false);
     const [editInfo, setEditInfo] = useState(info);
@@ -83,7 +84,7 @@ function Card(props) {
 
     const updateInfo = (title, value) => {
         const option = title.split(" ")[0].toLowerCase()
-        setEditInfo({...info, [option]: value})
+        setEditInfo({...editInfo, [option]: value})
         setOptions({...options, [title]: value})
     }
 
@@ -102,6 +103,10 @@ function Card(props) {
                 <button onClick={onEdit}>Save</button>
             </OptionWrapper>
         </CardWrapper>
+    ) : info.id === -1 ? (
+        <CardWrapper bgcolor={info.color} edit={editMode}>
+            <VImage src={info.image} onClick={() => setEditMode(true)} style={{cursor: "pointer"}}/>
+        </CardWrapper>
     ) : (
         <CardWrapper bgcolor={info.color} edit={editMode}>
             <VName>{info.name}&nbsp;
@@ -111,6 +116,15 @@ function Card(props) {
                 height="20"
                 width="20"
                 onClick={() => setEditMode(true)}
+                style={{cursor: "pointer"}}
+            />&nbsp;
+            <img
+                src='https://cdn-icons-png.flaticon.com/512/3481/3481306.png'
+                alt="Delete Icon"
+                height="20"
+                width="20"
+                onClick={() => {onDelete(info)}}
+                style={{cursor: "pointer"}}
             />
             </VName>
             <VGen>Gen {info.gen}</VGen>
@@ -118,10 +132,12 @@ function Card(props) {
             <VIcons>
                 <VIcon
                     href={info.youtube}
+                    target="_blank"
                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/2560px-YouTube_full-color_icon_%282017%29.svg.png"
                 />
                 <VIcon
                     href={info.twitter}
+                    target="_blank"
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4n_urpJ9XpwOTdzBVbGvactwHrPagYQrTJPYjxfxLGkSyu7nJZVqRVGAeohnPgKMrnKE&usqp=CAU"
                 />
             </VIcons>

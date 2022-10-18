@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Card from './Card';
 
@@ -18,6 +18,17 @@ const HomeWrapper = styled(FlexCenter)`
 
 const DisplayDiv = styled(FlexCenter)`
 `
+const SortDiv = styled.div`
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 0 10px;
+    cursor: pointer;
+    ${({ isSelect }) => isSelect ? `
+        font-weight: bold;
+        background-color: #00FFFF;
+    ` : ""}
+`
 
 const MainDiv = styled.div`
     display: flex;
@@ -26,44 +37,142 @@ const MainDiv = styled.div`
 `
 
 function Home(props) {
-    const [vtubers, setVtubers] = useState([
-        {
-            id: 1,
-            name: "Inugami Korone",
-            gen: 3.5,
-            image: "https://static.miraheze.org/hololivewiki/thumb/f/f3/Inugami_Korone_-_Portrait_05.png/290px-Inugami_Korone_-_Portrait_05.png",
-            youtube: "#",
-            twitter: "#",
-            color: "#FDFD96"
-        },
-        {
-            id: 2,
-            name: "Nekomata Okayu",
-            gen: 3.5,
-            image: "https://static.miraheze.org/hololivewiki/thumb/1/12/Nekomata_Okayu_-_Portrait_3D_01.png/290px-Nekomata_Okayu_-_Portrait_3D_01.png",
-            youtube: "#",
-            twitter: "#",
-            color: "#CBC3E3"
-        },
-    ]);
+    const [vtubers, setVtubers] = useState([]);
+    const [displayBy, setDisplayBy] = useState("gen asc")
+
+    const updateDB = (vtuber, method) => {
+        const updatePromise = method === "GET"
+            ? fetch("http://localhost:3001/get")
+            : fetch(`http://localhost:3001/${method.toLowerCase()}`, {
+            method: method,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(vtuber)
+        })
+        updatePromise.then(res => res.json()).then(data => {
+            setVtubers([
+                ...data,
+                {
+                    // Add Card
+                    id: -1,
+                    image: "https://cdn1.iconfinder.com/data/icons/zeir-miscellaneous-elements-1/32/plus_add_new_more_positive-512.png",
+                    color: "#D3D3D3"
+                }
+            ])
+        });
+    }
+
+    useEffect(() => {
+        updateDB({}, "GET");
+        // fetch("http://localhost:3001/get").then(res => res.json()).then(data => {
+        //     setVtubers([
+        //         ...data,
+        //         {
+        //             // Add Card
+        //             id: -1,
+        //             image: "https://cdn1.iconfinder.com/data/icons/zeir-miscellaneous-elements-1/32/plus_add_new_more_positive-512.png",
+        //             color: "#D3D3D3"
+        //         }
+        //     ])
+        // });
+    }, [])
 
     const updateVtubers = (editInfo) => {
-        let newVtubers = vtubers.map(vtuber => vtuber.id === editInfo.id ? editInfo : vtuber)
-        setVtubers([...newVtubers])
+        if (editInfo.id === -1) {
+            addVtuber(editInfo)
+        } else {
+            updateVtuber(editInfo)
+        }
+    }
+
+    const addVtuber = (vtuber) => {
+        fetch('http://localhost:3001/add', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(vtuber)
+        }).then(res => res.json()).then(data => {
+            setVtubers([
+                ...data,
+                vtubers[vtubers.length - 1] // Add card
+            ])
+        });
+    }
+
+    const updateVtuber = (vtuber) => {
+        fetch('http://localhost:3001/update', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(vtuber)
+        }).then(res => res.json()).then(data => {
+            setVtubers([
+                ...data,
+                vtubers[vtubers.length - 1] // Add card
+            ])
+        });
+    }
+
+    const deleteVtubers = (vtuber) => {
+        fetch('http://localhost:3001/delete', {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(vtuber)
+        }).then(res => res.json()).then(data => {
+            setVtubers([
+                ...data,
+                vtubers[vtubers.length - 1] // Add card
+            ])
+        });
+    }
+
+    const sortVtubers = (a, b) => {
+        if (a.id === -1 || b.id === -1) {
+            return 0;
+        }
+        const [display, order] = displayBy.split(" ");
+
+        switch (display) {
+            case "gen":
+                return order === "asc" ? parseFloat(a.gen) - parseFloat(b.gen) : parseFloat(b.gen) - parseFloat(a.gen);
+            case "name":
+                return order === "asc" ? (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1) : (a.name.toLowerCase() < b.name.toLowerCase() ? 1 : -1);
+            default:
+                return 0;
+        }
     }
 
     return (
         <HomeWrapper>
             <h1>Know Your <img src="/holologo.png" alt="Hololive Logo" height="40px" /></h1>
             <DisplayDiv>
-                Display by: <DisplayDiv>
-                    <div>Gen</div>
-                    <div>Name</div>
-                </DisplayDiv>
+                <span>Display by: </span>
+                <SortDiv
+                    onClick={() => { setDisplayBy(displayBy === "gen asc" ? "gen desc" : "gen asc") }}
+                    isSelect={displayBy.split(" ")[0] === "gen"}
+                >Gen</SortDiv>
+                <SortDiv
+                    onClick={() => { setDisplayBy(displayBy === "name asc" ? "name desc" : "name asc") }}
+                    isSelect={displayBy.split(" ")[0] === "name"}
+                >Name</SortDiv>
             </DisplayDiv>
             <MainDiv>
-                {vtubers.map((vtuber, idx) => (
-                    <Card key={`Card${vtuber.id}`} info={vtuber} onChange={updateVtubers}/>
+                {vtubers.sort(sortVtubers).map((vtuber, idx) => (
+                    <Card
+                        key={`Card${vtuber.id}`}
+                        info={vtuber}
+                        onChange={v => {updateDB(v, v.id === -1 ? "POST" : "PUT")}}
+                        onDelete={v => {updateDB(v, "DELETE")}}
+                    />
                 ))}
             </MainDiv>
         </HomeWrapper>
