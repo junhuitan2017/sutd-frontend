@@ -7,6 +7,7 @@ const CardWrapper = styled.div`
     border: 1px solid black;
     border-radius: 8px;
     ${({edit}) => edit ? "" : "padding: 0 20px;"}
+    margin: 10px;
     background: ${({bgcolor}) => bgcolor};
     flex-flow: ${({edit}) => edit ? "row" : "column"};
     align-items: center;
@@ -78,8 +79,18 @@ function Card(props) {
     });
 
     const onEdit = () => {
-        onChange(editInfo)
-        setEditMode(false)
+        onChange(editInfo);
+        setEditMode(false);
+
+        // Reset options
+        setOptions({
+            "Name": info.name,
+            "Image URL": info.image,
+            "Gen": info.gen,
+            "Color": info.color,
+            "Youtube URL": info.youtube,
+            "Twitter URL": info.twitter
+        });
     }
 
     const updateInfo = (title, value) => {

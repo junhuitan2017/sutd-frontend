@@ -2,6 +2,7 @@ body {
   height: 100%;
   width: 100%;
   text-align: center;
-  background-image: url("https://c.tenor.com/cOh9sUnluWEAAAAM/inugami-korone-furball.gif");
+  /* background-image: url("https://c.tenor.com/cOh9sUnluWEAAAAM/inugami-korone-furball.gif"); */
+  background-color: gray;
   background-size: cover;
 }

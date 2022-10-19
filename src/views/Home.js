@@ -32,6 +32,7 @@ const SortDiv = styled.div`
 
 const MainDiv = styled.div`
     display: flex;
+    flex-flow: row wrap;
     width: 80%;
     justify-content: space-evenly;
 `
@@ -66,74 +67,7 @@ function Home(props) {
 
     useEffect(() => {
         updateDB({}, "GET");
-        // fetch("http://localhost:3001/get").then(res => res.json()).then(data => {
-        //     setVtubers([
-        //         ...data,
-        //         {
-        //             // Add Card
-        //             id: -1,
-        //             image: "https://cdn1.iconfinder.com/data/icons/zeir-miscellaneous-elements-1/32/plus_add_new_more_positive-512.png",
-        //             color: "#D3D3D3"
-        //         }
-        //     ])
-        // });
     }, [])
-
-    const updateVtubers = (editInfo) => {
-        if (editInfo.id === -1) {
-            addVtuber(editInfo)
-        } else {
-            updateVtuber(editInfo)
-        }
-    }
-
-    const addVtuber = (vtuber) => {
-        fetch('http://localhost:3001/add', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(vtuber)
-        }).then(res => res.json()).then(data => {
-            setVtubers([
-                ...data,
-                vtubers[vtubers.length - 1] // Add card
-            ])
-        });
-    }
-
-    const updateVtuber = (vtuber) => {
-        fetch('http://localhost:3001/update', {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(vtuber)
-        }).then(res => res.json()).then(data => {
-            setVtubers([
-                ...data,
-                vtubers[vtubers.length - 1] // Add card
-            ])
-        });
-    }
-
-    const deleteVtubers = (vtuber) => {
-        fetch('http://localhost:3001/delete', {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(vtuber)
-        }).then(res => res.json()).then(data => {
-            setVtubers([
-                ...data,
-                vtubers[vtubers.length - 1] // Add card
-            ])
-        });
-    }
 
     const sortVtubers = (a, b) => {
         if (a.id === -1 || b.id === -1) {
