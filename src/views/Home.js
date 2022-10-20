@@ -42,9 +42,10 @@ function Home(props) {
     const [displayBy, setDisplayBy] = useState("gen asc")
 
     const updateDB = (vtuber, method) => {
+        const apiUrl = "http://54.169.255.223:3001";
         const updatePromise = method === "GET"
-            ? fetch("http://localhost:3001/get")
-            : fetch(`http://localhost:3001/${method.toLowerCase()}`, {
+            ? fetch(`${apiUrl}/get`)
+            : fetch(`${apiUrl}/${method.toLowerCase()}`, {
             method: method,
             headers: {
                 'Accept': 'application/json',
