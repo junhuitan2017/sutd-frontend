@@ -3,6 +3,38 @@ body {
   width: 100%;
   text-align: center;
   /* background-image: url("https://c.tenor.com/cOh9sUnluWEAAAAM/inugami-korone-furball.gif"); */
-  background-color: gray;
-  background-size: cover;
+  /* background-color: #265B5F;
+  background-size: cover; */
+  background-color: #fff;
+  background-image: linear-gradient(90deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px), linear-gradient(#eee 0.1em, transparent 0.1em);
+  background-size: 100% 1.2em;
+}
+
+body * {
+  font-family: 'Baby Doll';
+  border-bottom-left-radius: 15px 255px;
+  border-bottom-right-radius: 225px 15px;
+  border-top-left-radius: 255px 15px;
+  border-top-right-radius: 15px 225px;
+}
+
+@font-face {
+  font-family: 'Home and Work';
+  src: local('Home and Work'), url(./fonts/HomeAndWork.otf) format('opentype');
+  /* other formats include: 'woff', 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
+}
+
+@font-face {
+  font-family: 'Baby Doll';
+  src: local('Baby Doll'), url(./fonts/BabyDoll.otf) format('opentype');
+  /* other formats include: 'woff', 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
+}
+
+@font-face {
+  font-family: 'Good Unicorn';
+  src: local('Good Unicorn'), url(./fonts/GoodUnicornRegular.ttf) format('truetype');
+  /* other formats include: 'woff', 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
 }

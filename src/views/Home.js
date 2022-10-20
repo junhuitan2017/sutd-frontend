@@ -2,6 +2,17 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Card from './Card';
 
+const HomeTitle = styled.div`
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    padding: 0 20px;
+
+    h1 {
+        margin-right: 15px;
+    }
+`
+
 const FlexCenter = styled.div`
     display: flex;
     justify-content: center;
@@ -21,7 +32,7 @@ const DisplayDiv = styled(FlexCenter)`
 const SortDiv = styled.div`
     padding: 10px;
     border: 1px solid black;
-    border-radius: 10px;
+    // border-radius: 10px;
     margin: 0 10px;
     cursor: pointer;
     ${({ isSelect }) => isSelect ? `
@@ -34,7 +45,7 @@ const MainDiv = styled.div`
     display: flex;
     flex-flow: row wrap;
     width: 80%;
-    justify-content: space-evenly;
+    justify-content: center;
 `
 
 function Home(props) {
@@ -87,7 +98,7 @@ function Home(props) {
 
     return (
         <HomeWrapper>
-            <h1>Know Your <img src="/holologo.png" alt="Hololive Logo" height="40px" /></h1>
+            <HomeTitle><h1>Know Your</h1><img src="/holologo.png" alt="Hololive Logo" height="40px" /></HomeTitle>
             <DisplayDiv>
                 <span>Display by: </span>
                 <SortDiv
