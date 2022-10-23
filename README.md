@@ -12,7 +12,7 @@
 git clone https://github.com/junhuitan2017/sutd-frontend.git
 ```
 
-### 2. Download docker engine
+### 2. Download docker engine (If not already done)
 ```sh
 # Install Docker packages
 sudo apt-get update
