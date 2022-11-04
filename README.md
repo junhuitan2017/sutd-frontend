@@ -6,6 +6,12 @@
 
 [**See the backend app here!**](https://github.com/junhuitan2017/sutd-backend)
 
+## Tech Stack
+- React JS
+- styled-component
+- docker
+- deployed on AWS EC2
+
 ## Setting up the project on AWS EC2 instance
 ### 1. Clone the repository in EC2
 ```
