@@ -54,7 +54,7 @@ function Home(props) {
 
     const updateDB = (vtuber, method) => {
         // const apiUrl = process.env.NODE_ENV === 'production' ? "http://54.169.255.223:3001" : "http://localhost:3001";
-        const apiUrl = "http://54.169.100.199:3001/";
+        const apiUrl = "http://54.169.100.199:3001";
         const updatePromise = method === "GET"
             ? fetch(`${apiUrl}/get`)
             : fetch(`${apiUrl}/${method.toLowerCase()}`, {
