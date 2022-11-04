@@ -65,3 +65,39 @@ Run the command to remove the id under the name sutd-frontend
 ```
 docker rm -f <container id>
 ```
+
+## Setting up Nginx reverse proxy
+### 1. Install Nginx in EC2
+```
+sudo apt-get update
+sudo apt-get install nginx
+```
+
+### 2. Edit the configuration for Nginx
+```
+sudo nano /etc/nginx/sites-available/default
+```
+Paste the following into the file
+```
+server {
+        listen 80;
+        server_name student-3.sutdacademytools.net;
+        location / {
+                proxy_pass http://student-3.sutdacademytools.net:3000/;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header Host $host;
+
+        }
+}
+```
+
+### 3. Check if the configuration is correct
+```
+sudo service nginx configtest
+```
+
+### 4. Start the service
+```
+sudo service nginx start
+```
